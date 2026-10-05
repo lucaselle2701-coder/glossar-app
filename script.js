@@ -1,4 +1,4 @@
-const API_URL = "DEINE_APPS_SCRIPT_URL_HIER_EINTRAGEN";
+const API_URL = "https://script.google.com/macros/s/DEINE_ECHTE_ID/exec";
 let entries = [];
 let editingId = null;
 
