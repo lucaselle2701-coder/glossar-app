@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gemeinsames Glossar</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="topbar">
+  <div class="brand">
+    <div class="logo">G</div>
+    <div><h1>Gemeinsames Glossar</h1><p>Gemeinsam Wissen sammeln und teilen.</p></div>
+  </div>
+  <button id="addBtn" class="primary-btn">＋ Begriff hinzufügen</button>
+</header>
+
+<main class="container">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">GEMEINSAME WISSENSSAMMLUNG</span>
+      <h2>Alle wichtigen Begriffe an einem Ort.</h2>
+      <p>Die Einträge werden zentral in eurem Google Sheet gespeichert.</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><strong id="totalCount">0</strong><span>Begriffe</span></div>
+      <div class="stat"><strong id="categoryCount">0</strong><span>Kategorien</span></div>
+    </div>
+  </section>
+
+  <section class="toolbar">
+    <div class="search-wrap"><span>⌕</span><input id="searchInput" type="search" placeholder="Begriff oder Erklärung suchen..."></div>
+    <select id="categoryFilter"><option value="">Alle Kategorien</option></select>
+    <button id="resetBtn" class="secondary-btn">Filter zurücksetzen</button>
+  </section>
+
+  <section id="emptyState" class="empty hidden">
+    <div class="empty-icon">📚</div><h3>Keine Begriffe gefunden</h3>
+    <p>Füge einen Begriff hinzu oder ändere deine Suche.</p>
+  </section>
+  <section id="entries" class="grid"></section>
+</main>
+
+<div id="modal" class="modal hidden" aria-hidden="true">
+  <div class="modal-backdrop" id="modalBackdrop"></div>
+  <div class="modal-card" role="dialog" aria-modal="true">
+    <div class="modal-header">
+      <div><span class="eyebrow">GLOSSAR</span><h2 id="modalTitle">Neuen Begriff hinzufügen</h2></div>
+      <button id="closeModal" class="icon-btn">×</button>
+    </div>
+    <form id="entryForm">
+      <input type="hidden" id="entryId">
+      <label for="term">Begriff *</label>
+      <input id="term" required maxlength="100" placeholder="z. B. API">
+      <label for="definition">Erklärung *</label>
+      <textarea id="definition" required maxlength="1500" rows="5" placeholder="Erkläre den Begriff verständlich..."></textarea>
+      <div class="two-col">
+        <div><label for="category">Kategorie</label><input id="category" maxlength="60" placeholder="z. B. Informatik"></div>
+        <div><label for="example">Beispiel</label><input id="example" maxlength="300" placeholder="Optionales Beispiel"></div>
+      </div>
+      <label for="source">Quelle / Link</label>
+      <input id="source" type="url" maxlength="500" placeholder="https://...">
+      <div class="form-actions">
+        <button type="button" id="cancelBtn" class="secondary-btn">Abbrechen</button>
+        <button type="submit" class="primary-btn">Speichern</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
