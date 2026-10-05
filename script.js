@@ -5,13 +5,51 @@ let editingId = null;
 const $ = id => document.getElementById(id);
 
 async function api(action, data = {}) {
-  const response = await fetch(API_URL, {
+  // GitHub Pages und Google Apps Script liegen auf unterschiedlichen Domains.
+  // Deshalb lesen wir per JSONP (GET) und senden Änderungen als simple POST.
+  if (action === "list") {
+    return new Promise((resolve, reject) => {
+      const callbackName = "glossarCallback_" + Date.now();
+      const script = document.createElement("script");
+      const timeout = setTimeout(() => {
+        cleanup();
+        reject(new Error("Zeitüberschreitung beim Laden"));
+      }, 10000);
+
+      function cleanup() {
+        clearTimeout(timeout);
+        delete window[callbackName];
+        script.remove();
+      }
+
+      window[callbackName] = result => {
+        cleanup();
+        if (result && result.error) reject(new Error(result.error));
+        else resolve(result || []);
+      };
+
+      script.onerror = () => {
+        cleanup();
+        reject(new Error("Google Apps Script konnte nicht geladen werden."));
+      };
+
+      script.src = `${API_URL}?action=list&callback=${encodeURIComponent(callbackName)}`;
+      document.head.appendChild(script);
+    });
+  }
+
+  // no-cors erlaubt den POST von GitHub Pages zu Apps Script.
+  // Die Antwort ist dabei absichtlich nicht lesbar; danach laden wir die Liste neu.
+  await fetch(API_URL, {
     method: "POST",
+    mode: "no-cors",
     headers: {"Content-Type": "text/plain;charset=utf-8"},
     body: JSON.stringify({ action, ...data })
   });
-  if (!response.ok) throw new Error("Serverfehler");
-  return response.json();
+
+  // Apps Script braucht kurz zum Schreiben in Google Sheets.
+  await new Promise(resolve => setTimeout(resolve, 700));
+  return { success: true };
 }
 
 async function loadEntries() {
