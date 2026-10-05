@@ -1,4 +1,4 @@
-const API_URL = "https://script.google.com/macros/s/DEINE_ECHTE_ID/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwRG3Ki7KSAIkp8YZqzmEfWo1J-ZGmTcd0a-zRlwktS4pzdbPG8Lnny3N0jFSWx2DTkqA/exec";
 let entries = [];
 let editingId = null;
 
